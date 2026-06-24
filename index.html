@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Produtividade MeliAir — MLM</title>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --yellow:#FFF8DC;--yellow-mid:#F5E97A;--yellow-dark:#E8D98A;--yellow-light:#FFFDF0;
+  --blue:#2C3E6B;--blue-dark:#1E2D52;--blue-deeper:#15203D;--blue-light:#EEF2FF;--blue-mid:#C5CFEA;
+  --dark:#1A1A2E;--text:#333;--gray:#717171;--gray-light:#F5F5F5;--border:#EBEBEB;--white:#fff;
+  --green:#2E7D5E;--green-light:#E8F5EE;
+}
+body{font-family:'Inter',sans-serif;background:#EDEAE3;color:var(--text);min-height:100vh}
+header{background:var(--yellow);height:60px;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:2px solid var(--yellow-dark)}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-mark{width:36px;height:36px;background:var(--blue);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.logo-mark svg{width:20px;height:20px}
+.logo-name{font-family:'Raleway',sans-serif;font-weight:800;font-size:17px;color:var(--blue-deeper)}
+.logo-sub{font-size:10px;font-weight:600;color:var(--blue-dark);letter-spacing:1px;text-transform:uppercase;margin-top:1px}
+.header-right{display:flex;align-items:center;gap:8px}
+.btn-lang{font-size:12px;font-weight:700;color:var(--blue-deeper);cursor:pointer;background:rgba(255,255,255,0.85);padding:5px 14px;border-radius:20px;border:1.5px solid var(--yellow-dark);transition:background .15s;user-select:none;text-decoration:none;display:inline-flex;align-items:center;gap:4px}
+.btn-lang:hover{background:white}
+.btn-back{font-size:12px;font-weight:600;color:var(--blue-deeper);text-decoration:none;background:rgba(255,255,255,0.7);padding:4px 12px;border-radius:20px;border:1px solid var(--yellow-dark);transition:background .15s}
+.btn-back:hover{background:white}
+.badge{background:var(--blue);color:var(--yellow-mid);font-family:'Raleway',sans-serif;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px}
+.hero{background:var(--yellow);padding:2.5rem 2rem 2rem;text-align:center;border-bottom:2px solid var(--yellow-dark)}
+.hero-tag{display:inline-block;background:var(--blue);color:var(--yellow-mid);font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 14px;border-radius:20px;margin-bottom:14px}
+.hero-title-wrap{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.hero-ml-icon{width:46px;height:46px;background:var(--blue);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hero-ml-icon svg{width:26px;height:26px}
+.hero h1{font-family:'Raleway',sans-serif;font-size:clamp(20px,3vw,32px);font-weight:800;color:var(--blue-deeper);letter-spacing:-0.8px;line-height:1.2}
+.hero p{font-size:14px;color:var(--blue-dark);opacity:.8;max-width:640px;margin:8px auto 0;line-height:1.6}
+.container{max-width:1200px;margin:0 auto;padding:2rem 1.5rem 4rem}
+.layout{display:grid;grid-template-columns:1fr 460px;gap:20px;align-items:start}
+@media(max-width:980px){.layout{grid-template-columns:1fr}}
+.card{background:var(--white);border-radius:12px;border:1px solid var(--border)}
+.card+.card{margin-top:16px}
+.card-header{padding:1rem 1.25rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.card-icon{width:32px;height:32px;background:var(--yellow-light);border:1px solid var(--yellow-dark);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px}
+.card-header h2{font-family:'Raleway',sans-serif;font-size:14px;font-weight:700;color:var(--dark)}
+.card-header p{font-size:11px;color:var(--gray);margin-top:1px}
+.card-body{padding:1.25rem}
+.sec-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue);margin-bottom:10px;margin-top:4px}
+.divider{border:none;border-top:1px solid var(--border);margin:.9rem 0}
+.field{margin-bottom:.9rem}.field:last-child{margin-bottom:0}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+label{display:block;font-size:12px;font-weight:500;color:var(--text);margin-bottom:4px}
+label .hint{font-weight:400;color:var(--gray)}
+input[type="number"]{width:100%;height:38px;border:1.5px solid var(--border);border-radius:8px;padding:0 10px;font-size:14px;font-family:'Inter',sans-serif;color:var(--text);background:var(--white);outline:none;transition:border-color .15s}
+input[type="number"]:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(44,62,107,.1)}
+.results-sticky{position:sticky;top:76px}
+.result-header{background:var(--blue);padding:1.25rem 1.5rem;border-radius:12px 12px 0 0}
+.result-header .r-label{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:4px}
+.result-header .r-title{font-family:'Raleway',sans-serif;font-size:15px;font-weight:700;color:var(--yellow-mid)}
+.res-kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:.9rem 1.25rem;border-bottom:1px solid var(--border)}
+.kpi{background:var(--gray-light);border-radius:8px;padding:9px 10px;text-align:center}
+.kpi.hl{background:var(--blue)}
+.kpi-val{font-family:'Raleway',sans-serif;font-size:22px;font-weight:800;color:var(--blue);line-height:1}
+.kpi.hl .kpi-val{color:var(--yellow-mid)}
+.kpi-lbl{font-size:9px;color:var(--gray);margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
+.kpi.hl .kpi-lbl{color:rgba(255,255,255,.6)}
+.res-table-wrap{padding:.75rem 1.25rem;overflow-x:auto}
+.res-table{width:100%;border-collapse:collapse;font-size:11px}
+.res-table th{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gray);padding:5px 6px;border-bottom:2px solid var(--border);text-align:right;white-space:nowrap}
+.res-table th:first-child{text-align:left}
+.res-table td{padding:6px 6px;border-bottom:1px solid var(--border);vertical-align:middle;color:var(--text)}
+.res-table td:first-child{font-weight:600;color:var(--dark);font-size:11px}
+.res-table td:not(:first-child){text-align:right;font-family:'Raleway',sans-serif;font-size:12px;font-weight:700}
+.res-table tr:last-child td{border-bottom:none}
+.res-table tr.group-hdr td{background:var(--blue);font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--yellow-mid);padding:5px 6px;font-family:'Inter',sans-serif}
+.res-table tr.sub-hdr td{background:var(--gray-light);font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--blue);padding:4px 6px;font-family:'Inter',sans-serif;font-style:italic}
+.res-table tr:hover td{background:var(--blue-light)}
+.res-table tr.group-hdr:hover td,.res-table tr.sub-hdr:hover td{background:inherit}
+.empty-state{padding:2.5rem 1.5rem;text-align:center;color:var(--gray)}
+.empty-icon{font-size:32px;margin-bottom:10px}
+.empty-state p{font-size:13px;line-height:1.6}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.animate{animation:fadeUp .22s ease forwards}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="#">
+    <div class="logo-mark">
+      <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="6.5" r="3.5" fill="#F5E97A"/><path d="M2.5 17.5c0-4.142 3.358-7.5 7.5-7.5s7.5 3.358 7.5 7.5" stroke="#F5E97A" stroke-width="2.2" stroke-linecap="round"/></svg>
+    </div>
+    <div><div class="logo-name">Mercado Livre</div><div class="logo-sub">Ferramentas Internas</div></div>
+  </a>
+  <div class="header-right">
+    <a class="btn-back" href="https://mtmtransportes-meliairbackhaulpt.vercel.app/">← Voltar</a>
+    <a class="btn-lang" href="https://mtmtransportes-meliairbackhaulmxes.vercel.app/"><small style="font-size:9px;font-weight:800;letter-spacing:.5px;opacity:.7">MX</small> Español</a>
+    <span class="badge">MTM — Produtividade MeliAir · MLM</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-tag">Produtividade Operacional · MeliAir · 🇲🇽 México</div>
+  <div class="hero-title-wrap">
+    <div class="hero-ml-icon">
+      <svg viewBox="0 0 26 26" fill="none">
+        <path d="M23 13 L3 13" stroke="#F5E97A" stroke-width="2" stroke-linecap="round"/>
+        <path d="M12 6 L3 13 L12 20" stroke="#F5E97A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M18 9 L15 13 L18 17" stroke="#F5E97A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <h1>Calculadora de Produtividade MeliAir — MLM</h1>
+  </div>
+  <p>Preencha os dados operacionais. A calculadora mostra a produtividade MTM esperada (pcts/hh por posto) para cada subprocesso: desmontagem de lâminas, descarga de gaylords, otimização e carregamento do caminhão.</p>
+</div>
+
+<div class="container">
+<div class="layout">
+
+<!-- ═══ ESQUERDA: inputs ═══ -->
+<div>
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">📋</div>
+      <div>
+        <h2>Dados de Operação</h2>
+        <p>Parâmetros do ciclo MLM — operação no aeroporto do México</p>
+      </div>
+    </div>
+    <div class="card-body">
+
+      <div class="sec-label">Geral</div>
+      <div class="field">
+        <label>Pacotes por caminhão <span class="hint">(pcts)</span></label>
+        <input type="number" id="L4" min="1" placeholder="ex. 3000" oninput="calcular()">
+      </div>
+
+      <hr class="divider">
+
+      <div class="sec-label">Distâncias (metros)</div>
+      <div class="field">
+        <label>Dist. casterdeck → zona de backhaul <span class="hint">(m)</span></label>
+        <input type="number" id="L5" min="0" placeholder="ex. 15" oninput="calcular()">
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Dist. montagem de HU → buffer <span class="hint">(m)</span></label>
+          <input type="number" id="L11" min="0" placeholder="ex. 15" oninput="calcular()">
+        </div>
+        <div class="field">
+          <label>Dist. buffer → docas <span class="hint">(m)</span></label>
+          <input type="number" id="L12" min="0" placeholder="ex. 30" oninput="calcular()">
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <div class="sec-label">SPP — Unidades de Carga</div>
+      <div class="field-row">
+        <div class="field">
+          <label>SPP Gaylord (recepção) <span class="hint">(pcts/gaylord)</span></label>
+          <input type="number" id="L6" min="1" placeholder="ex. 70" oninput="calcular()">
+        </div>
+        <div class="field">
+          <label>SPP Gaylord (otimizado) <span class="hint">(pcts/gaylord)</span></label>
+          <input type="number" id="L7" min="1" placeholder="ex. 100" oninput="calcular()">
+        </div>
+      </div>
+      <div class="field">
+        <label>SPP Saca <span class="hint">(pcts/saca)</span></label>
+        <input type="number" id="L8" min="1" placeholder="ex. 50" oninput="calcular()">
+      </div>
+
+      <hr class="divider">
+
+      <div class="sec-label">Capacidades</div>
+      <div class="field-row">
+        <div class="field">
+          <label>Sacas por gaylord <span class="hint">(qtd média)</span></label>
+          <input type="number" id="L9" min="0" placeholder="ex. 4" oninput="calcular()">
+        </div>
+        <div class="field">
+          <label>Gaylords por caminhão <span class="hint">(gaylords/cam)</span></label>
+          <input type="number" id="L10" min="1" placeholder="ex. 24" oninput="calcular()">
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div><!-- /left -->
+
+<!-- ═══ DIREITA: resultados ═══ -->
+<div class="results-sticky">
+  <div class="card">
+    <div class="result-header">
+      <div class="r-label">Produtividade por Subprocesso</div>
+      <div class="r-title">MeliAir — MLM (México)</div>
+    </div>
+    <div class="res-kpis">
+      <div class="kpi hl">
+        <div class="kpi-val" id="kpiB12">22,32</div>
+        <div class="kpi-lbl">Desmontagem lâmina (lâm/hh)</div>
+      </div>
+      <div class="kpi hl">
+        <div class="kpi-val" id="kpiE12">—</div>
+        <div class="kpi-lbl">Rep empilhadeira (pcts/hh)</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val" id="kpiD14">—</div>
+        <div class="kpi-lbl">Rep levar saca (pcts/hh)</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val" id="kpiH14">—</div>
+        <div class="kpi-lbl">Carga caminhão (pcts/hh)</div>
+      </div>
+    </div>
+    <div class="res-table-wrap">
+      <div id="tableContainer">
+        <div class="empty-state">
+          <div class="empty-icon">📊</div>
+          <p>Preencha os dados operacionais para ver a produtividade de cada subprocesso.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════════
+   CALCULADORA MLM — fórmulas da aba "CALCULADORA DE PRODUCTIVIDAD MLM"
+   (Hoja 8 da planilha)
+
+   INPUTS (coluna L da planilha):
+     L4  = ppcam         Paquetes por caminhão
+     L5  = dist_coleta   Distância de coleta — Descarga Gaylords       (ref: 15 m)
+     L6  = spp_desc      SPP Descarga (pcts/unidade)
+     L7  = spp_carga     SPP Carregamento (pcts/unidade)
+     L8  = spp_lam       SPP Lâmina (pcts/lâmina)
+     L9  = dist_otim     Distância de otimização                       (ref: 4 m)
+     L10 = lote_carga    Lote de carregamento (pcts/ciclo)             (ref: 24)
+     L11 = dist_H        Distância operação H                          (ref: 15 m)
+     L12 = dist_I        Distância operação I                          (ref: 30 m)
+
+   CAPS:
+     B12 = 22.32142857   (fixo)
+     C12 = 255.1020408   (fixo)
+     D12 = 103.121133    (fixo)
+     E12 = 3600 / ((37.854  + 1.152×L5 ) × 1.12)
+     F12 = 3600 / ((64.8    + 9.18×L9  ) × 1.12)
+     G12 = 3600 / ((64.8    + 15.26×L9 ) × 1.12)
+     H12 = 3600 / ((44.57   + 1.08×L11 ) × 1.12)
+     I12 = 3600 / ((32.741667 + 1.08×L12) × 1.12 × L10)
+
+   PCTS/HH (linha 14):
+     B14 = '-'        (sem conversão direta)
+     C14 = C12 × L8
+     D14 = D12 × 12  (multiplicador fixo)
+     E14 = E12 × L6
+     F14 = F12 × L8
+     G14 = G12 × L8
+     H14 = H12 × L7
+     I14 = I12 × L10 × L7
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Caps FIXOS ── */
+var B12_FIXED = 22.32142857;
+var C12_FIXED = 255.1020408;
+var D12_FIXED = 103.121133;
+
+/* ── Helpers ── */
+function g(id){ return parseFloat(document.getElementById(id).value); }
+function ok(x){ return !isNaN(x) && isFinite(x) && x > 0; }
+function fmt(x){ return (x != null && ok(x)) ? Math.round(x).toLocaleString('pt-BR') : '—'; }
+function fmt2(x){ return (x != null && ok(x)) ? x.toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2}) : '—'; }
+function fmt3(x){ return (x != null && ok(x)) ? x.toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2}) : '—'; }
+
+/* ── Cap dinâmico: 3600 / ((fixed + coef×Q) × mult) ── */
+function capDin(fixed, Q, coef, mult){
+  var total = fixed + coef * Q;
+  return total > 0 ? 3600 / (total * mult) : 0;
+}
+
+/* ── Cálculo principal ── */
+function calcular(){
+  var L5  = g('L5');
+  var L6  = g('L6');
+  var L7  = g('L7');
+  var L8  = g('L8');
+  var L9  = g('L9');
+  var L10 = g('L10');
+  var L11 = g('L11');
+  var L12 = g('L12');
+
+  /* Guard: pelo menos um input para mostrar resultados */
+  var temInput = ok(L5)||ok(L6)||ok(L7)||ok(L8)||ok(L9)||ok(L10)||ok(L11)||ok(L12);
+  if(!temInput) return;
+
+  /* ── Caps ── */
+  var B12 = B12_FIXED;
+  var C12 = C12_FIXED;
+  var D12 = D12_FIXED;
+
+  var E12 = ok(L5) ? capDin(37.854,    L5,   1.152, 1.12)         : null;
+  var F12 = ok(L9) ? capDin(64.8,      L9,   9.18,  1.12)         : null;
+  var G12 = ok(L9) ? capDin(64.8,      L9,  15.26,  1.12)         : null;
+  var H12 = ok(L11)? capDin(44.57,     L11,  1.08,  1.12)         : null;
+  var I12 = (ok(L12) && ok(L10)) ? capDin(32.741667, L12, 1.08, 1.12 * L10) : null;
+
+  /* ── Pcts/hh — linha 14 ── */
+  /* B14 = '-' */
+  var C14 = ok(L8)                    ? C12 * L8            : null;
+  var D14 = D12 * 12;                                          // multiplicador fixo
+  var E14 = (E12 && ok(L6))           ? E12 * L6            : null;
+  var F14 = (F12 && ok(L8))           ? F12 * L8            : null;
+  var G14 = (G12 && ok(L8))           ? G12 * L8            : null;
+  var H14 = (H12 && ok(L7))           ? H12 * L7            : null;
+  var I14 = (I12 && ok(L10) && ok(L7))? I12 * L10 * L7      : null;
+
+  /* ── KPIs ── */
+  document.getElementById('kpiB12').textContent = fmt2(B12);
+  document.getElementById('kpiE12').textContent = E12 ? fmt2(E12) : '—';
+  document.getElementById('kpiD14').textContent = fmt(D14);
+  document.getElementById('kpiH14').textContent = H14 != null ? fmt(H14) : '—';
+
+  /* ── Tabela ── */
+  var grupos = [
+    { grp: '🔧  Desmontagem de Lâminas', sub: null, rows: [
+      { nome: 'Produtividade desmontagem lâmina', cap: fmt2(B12)+' lâm/hh',              ph: null },
+      { nome: 'Produtividade rep retirar saca',   cap: fmt2(C12)+' pcts/hh',             ph: C14  },
+      { nome: 'Produtividade rep levar saca',     cap: fmt2(D12)+' pcts/hh',             ph: D14  }
+    ]},
+    { grp: '📦  Recepção (Empilhadeira)', sub: null, rows: [
+      { nome: 'Produtividade rep empilhadeira',   cap: E12 ? fmt2(E12)+' pcts/hh' : '—', ph: E14  }
+    ]},
+    { grp: '🔄  Otimização de Gaylord', sub: null, rows: [
+      { nome: 'Produtividade saca no gaylord',    cap: F12 ? fmt2(F12)+' pcts/hh' : '—', ph: F14  },
+      { nome: 'Produtividade otimização a granel',cap: G12 ? fmt2(G12)+' pcts/hh' : '—', ph: G14  }
+    ]},
+    { grp: '🚛  Carregamento do Caminhão', sub: null, rows: [
+      { nome: 'Produtividade empilhadeira',       cap: H12 ? fmt2(H12)+' pcts/hh' : '—', ph: H14  },
+      { nome: 'Produtividade de carga do caminhão', cap: I12 ? fmt3(I12)+' pcts/hh' : '—', ph: I14 }
+    ]}
+  ];
+
+  var html = '<table class="res-table animate"><thead><tr>';
+  html += '<th>Subprocesso</th><th>Capacidade</th><th>Pcts/hh</th>';
+  html += '</tr></thead><tbody>';
+
+  grupos.forEach(function(grp){
+    html += '<tr class="group-hdr"><td colspan="3">'+grp.grp+'</td></tr>';
+    if(grp.sub){
+      html += '<tr class="sub-hdr"><td colspan="3">↳ '+grp.sub+'</td></tr>';
+    }
+    grp.rows.forEach(function(r){
+      html += '<tr>';
+      html += '<td>'+r.nome+'</td>';
+      html += '<td style="text-align:right;font-size:11px;color:var(--gray)">'+r.cap+'</td>';
+      html += '<td>'+(r.ph == null ? '—' : fmt(r.ph))+'</td>';
+      html += '</tr>';
+    });
+  });
+
+  html += '</tbody></table>';
+  document.getElementById('tableContainer').innerHTML = html;
+}
+
+window.addEventListener('load', calcular);
+</script>
+</body>
+</html>
